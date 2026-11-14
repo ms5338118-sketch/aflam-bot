@@ -20,9 +20,8 @@ const client = new Client({
   }
 });
 
-client.on('qr', qr => {
-  qrcode.generate(qr, { small: true });
-});
+
+
 
 client.on('code', (code) => {
   console.log('PAIRING CODE: ' + code);
