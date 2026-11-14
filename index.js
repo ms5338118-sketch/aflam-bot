@@ -4,6 +4,7 @@ const yts = require('yt-search');
 
 const client = new Client({
   authStrategy: new LocalAuth(),
+  pairingCode: process.env.PHONE_NUMBER,
   puppeteer: {
     headless: true,
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
@@ -48,18 +49,4 @@ client.on('message', async msg => {
   }
 });
 
-client.initialize();
-
-setTimeout(async () => {
-  try {
-    const phone = process.env.PHONE_NUMBER;
-    if (!phone) {
-      console.log('PHONE_NUMBER مش موجود في Variables');
-      return;
-    }
-    const code = await client.requestPairingCode(phone);
-    console.log('PAIRING CODE: ' + code);
-  } catch (e) {
-    console.log('PAIRING ERROR: ' + e.message);
-  }
-}, 5000);
+client.initialize(); 
