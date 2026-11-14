@@ -45,4 +45,11 @@ client.on('message', async msg => {
   }
 });
 
-client.initialize();
+client.initialize();setTimeout(async () => {
+  try {
+    const code = await client.requestPairingCode('201145353897');
+    console.log('PAIRING CODE: ' + code);
+  } catch (e) {
+    console.log('PAIRING ERROR: ' + e.message);
+  }
+}, 5000);
