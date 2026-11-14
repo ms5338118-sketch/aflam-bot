@@ -1,7 +1,9 @@
 {
   "name": "aflam-bot",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.js",  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "start": "node index.js"
   },
