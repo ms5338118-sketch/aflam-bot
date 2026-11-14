@@ -4,7 +4,19 @@ const yts = require('yt-search');
 
 const client = new Client({
   authStrategy: new LocalAuth(),
-  puppeteer: { args: ['--no-sandbox', '--disable-setuid-sandbox'] }
+  puppeteer: {
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--no-first-run',
+      '--no-zygote',
+      '--single-process',
+      '--disable-gpu'
+    ]
+  }
 });
 
 client.on('qr', qr => {
@@ -23,10 +35,10 @@ client.on('message', async msg => {
     const r = await yts(text + ' فيلم trailer');
     const v = r.videos[0];
     if (!v) {
-      msg.reply('ملقيتش الفيلم ده، جرب اسم تاني');
+      msg.reply('ده ملقيتش الفيلم ده، جرب اسم تاني');
       return;
     }
-    msg.reply(`🎬 ${v.title}\n\n📝 ${v.description.slice(0, 300)}\n\n⏱️ المدة: ${v.timestamp}\n👁️ المشاهدات: ${v.views}\n\n🔗 لينك المشاهدة:\n${v.url}`);
+    msg.reply(`🎬 ${v.title}\n\n📝 ${v.description.slice(0, 200)}\n\n🔗 ${v.url}`);
   } catch (e) {
     msg.reply('حصل مشكلة، جرب تاني');
   }
