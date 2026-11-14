@@ -5,8 +5,8 @@ const yts = require('yt-search');
 const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: {
-        headless: true,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
+    headless: true,
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -24,8 +24,12 @@ client.on('qr', qr => {
   qrcode.generate(qr, { small: true });
 });
 
+client.on('code', (code) => {
+  console.log('PAIRING CODE: ' + code);
+});
+
 client.on('ready', () => {
-  console.log('البوت شغال');
+  console.log('شغال البوت');
 });
 
 client.on('message', async msg => {
@@ -36,18 +40,25 @@ client.on('message', async msg => {
     const r = await yts(text + ' فيلم trailer');
     const v = r.videos[0];
     if (!v) {
-      msg.reply('ده ملقيتش الفيلم ده، جرب اسم تاني');
+      msg.reply('ده الفيلم ملقيتش اسم ده، جرب اسم تاني');
       return;
     }
-    msg.reply(`🎬 ${v.title}\n\n📝 ${v.description.slice(0, 200)}\n\n🔗 ${v.url}`);
+    msg.reply(`🎬 ${v.title}\n\n📝 ${v.description.slice(0,300)}\n\n🔗 ${v.url}`);
   } catch (e) {
     msg.reply('حصل مشكلة، جرب تاني');
   }
 });
 
-client.initialize();setTimeout(async () => {
+client.initialize();
+
+setTimeout(async () => {
   try {
-    const code = await client.requestPairingCode('201145353897');
+    const phone = process.env.PHONE_NUMBER;
+    if (!phone) {
+      console.log('PHONE_NUMBER مش موجود في Variables');
+      return;
+    }
+    const code = await client.requestPairingCode(phone);
     console.log('PAIRING CODE: ' + code);
   } catch (e) {
     console.log('PAIRING ERROR: ' + e.message);
