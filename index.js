@@ -5,6 +5,9 @@ const yts = require('yt-search');
 const client = new Client({
   authStrategy: new LocalAuth(),
   pairingCode: process.env.PHONE_NUMBER,
+      webVersionCache: {
+        type: 'remote',
+    },
   puppeteer: {
     headless: true,
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
