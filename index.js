@@ -7,7 +7,7 @@ const client = new Client({
   pairingCode: process.env.PHONE_NUMBER,
   puppeteer: {
     headless: true,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
+    
     timeout: 120000,
     args: [
       '--no-sandbox',
@@ -17,7 +17,9 @@ const client = new Client({
       '--no-first-run',
       '--no-zygote',
       '--single-process',
-      '--disable-gpu'
+      '--disable-gpu', 
+      '--disable-extensions',
+'--disable-background-networking'
     ]
   }
 });
